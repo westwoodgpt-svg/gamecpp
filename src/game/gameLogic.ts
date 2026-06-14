@@ -19,10 +19,8 @@ export function isSupportApplied(state: GameState, projectId: string, supportId:
 
 export function formatMoney(value: number): string {
   return new Intl.NumberFormat("ru-RU", {
-    style: "currency",
-    currency: "RUB",
     maximumFractionDigits: 0,
-  }).format(value);
+  }).format(value) + " ₽";
 }
 
 export function getNextStage(stage: ProjectStage): ProjectStage {
@@ -259,7 +257,7 @@ export function generateTurnOutcome(state: GameState): GameState {
       events.push({
         id: `progress-${project.id}-${state.company.turn}`,
         type: "project_breakthrough",
-        message: `Проект «${project.name}» продвинулся до стадии «${newStage}», TRL вырос.`,
+        message: `Проект «${project.name}» продвинулся до стадии «${newStage}», уровень технологической готовности вырос.`,
       });
       company.reputation = Math.min(100, company.reputation + (isCommercial ? 8 : 3));
       return {
@@ -379,7 +377,7 @@ export function updateCharactersOnGrantResult(
         mood: params.approved ? "happy" : "thinking",
         text: params.approved
           ? "Теперь есть ресурсы на опытно-конструкторские работы и прототипирование."
-          : "Техническую часть можно доработать: покажите измеримый TRL, прототип и план коммерциализации.",
+          : "Техническую часть можно доработать: покажите измеримый уровень технологической готовности, прототип и план коммерциализации.",
       },
     ]),
   };
@@ -405,7 +403,7 @@ export function updateCharactersOnProjectStageChange(
       {
         name: "Владислав",
         mood: "happy",
-        text: `Технический прогресс виден. Зафиксируйте результаты испытаний, чтобы следующий TRL был защищен документально.`,
+        text: `Технический прогресс виден. Зафиксируйте результаты испытаний, чтобы следующий уровень технологической готовности был защищен документально.`,
       },
     ]),
   };
@@ -423,7 +421,7 @@ export function updateCharactersOnLowCash(state: GameState): GameState {
       {
         name: "Владислав",
         mood: "sad",
-        text: "Без ресурса сложно довести НИОКР до конца. Сфокусируйтесь на проектах с самым высоким TRL.",
+        text: "Без ресурса сложно довести НИОКР до конца. Сфокусируйтесь на проектах с самым высоким уровнем технологической готовности.",
       },
     ]),
   };

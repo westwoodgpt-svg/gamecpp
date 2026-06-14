@@ -87,19 +87,44 @@ type ProjectCardProps = {
   style?: CSSProperties;
 };
 
+function TRLSegments({ trl }: { trl: number }) {
+  return (
+    <div className="trl-segments" aria-label={`Уровень технологической готовности ${trl} из 9`}>
+      <div className="trl-segments-grid">
+        {Array.from({ length: 9 }).map((_, i) => (
+          <span
+            key={i}
+            className={`trl-segment-bar${i < trl ? " is-active" : ""}`}
+            title={`Уровень технологической готовности ${i + 1}`}
+          />
+        ))}
+      </div>
+      <span className="trl-number-val">{trl}/9</span>
+    </div>
+  );
+}
+
 function StagePipeline({ stage }: { stage: ProjectStage }) {
   const currentIndex = stageOrder.indexOf(stage);
+  const fillWidth = `${(currentIndex / (stageOrder.length - 1)) * 100}%`;
 
   return (
-    <div className="stage-pipeline" aria-label={`Стадия: ${stageLabels[stage]}`}>
-      {stageOrder.map((step, index) => (
-        <span
-          key={step}
-          className={`stage-pipeline__dot${index <= currentIndex ? " is-done" : ""}${index === currentIndex ? " is-current" : ""}`}
-          title={stageLabels[step]}
-        />
-      ))}
-      <span className="stage-pipeline__label">{stageLabels[stage]}</span>
+    <div className="stage-pipeline-container">
+      <div className="stage-pipeline" aria-label={`Стадия: ${stageLabels[stage]}`}>
+        <div className="stage-pipeline__track-fill" style={{ width: fillWidth }} />
+        {stageOrder.map((step, index) => (
+          <span
+            key={step}
+            className={`stage-pipeline__dot${index <= currentIndex ? " is-done" : ""}${index === currentIndex ? " is-current" : ""}`}
+          >
+            <span className="stage-pipeline__dot-tooltip">{stageLabels[step]}</span>
+          </span>
+        ))}
+      </div>
+      <div className="stage-pipeline-label-row">
+        <span>Стадия:</span>
+        <strong className="stage-pipeline__label-text">{stageLabels[stage]}</strong>
+      </div>
     </div>
   );
 }
@@ -117,6 +142,7 @@ function ProjectCard({
   const successChance = calculateSuccessChance(project, reputation);
   const status = project.isSuccessful ? "на-рынке" : project.isActive ? "активен" : "пауза";
   const statusLabel = project.isSuccessful ? "на рынке" : project.isActive ? "активен" : "пауза";
+  const statusIcon = project.isSuccessful ? "🚀" : project.isActive ? "⚡" : "⏸️";
 
   return (
     <article
@@ -133,17 +159,20 @@ function ProjectCard({
           {grantCount > 0 ? (
             <span className="badge badge-grant">грант{grantCount > 1 ? ` ×${grantCount}` : ""}</span>
           ) : null}
-          <span className={`status status-${status}`}>{statusLabel}</span>
+          <span className={`status status-${status}`}>
+            <span style={{ marginRight: "3px" }}>{statusIcon}</span>
+            {statusLabel}
+          </span>
         </div>
       </div>
 
       <StagePipeline stage={project.stage} />
 
       <dl className="project-meta">
-        <div>
-          <dt>TRL</dt>
+        <div className="trl-meta-item">
+          <dt>Уровень технологической готовности</dt>
           <dd>
-            <span className="trl-badge">{project.trl}</span>/9
+            <TRLSegments trl={project.trl} />
           </dd>
         </div>
         <div>

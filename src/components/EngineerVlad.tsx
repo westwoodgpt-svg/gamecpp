@@ -42,14 +42,36 @@ function EngineerAvatar({ mood }: { mood: CharacterMood }) {
 
   return (
     <svg className="char-svg char-svg--engineer" viewBox="0 0 80 110" aria-hidden="true">
+      <defs>
+        <linearGradient id="vladSkinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffe3cc" />
+          <stop offset="100%" stop-color="#efb98a" />
+        </linearGradient>
+        <linearGradient id="helmetGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ffd55c" />
+          <stop offset="100%" stop-color="#b88307" />
+        </linearGradient>
+        <linearGradient id="vladJacketGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#405261" />
+          <stop offset="100%" stop-color="#1c2830" />
+        </linearGradient>
+        <radialGradient id="vladBgGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(184, 116, 18, 0.28)" />
+          <stop offset="100%" stop-color="rgba(184, 116, 18, 0)" />
+        </radialGradient>
+      </defs>
+
+      {/* Background Glow */}
+      <circle cx="40" cy="40" r="32" fill="url(#vladBgGlow)" />
+
       {/* Shadow */}
       <ellipse cx="40" cy="105" rx="24" ry="4" fill="rgba(184,116,18,0.13)" />
 
       {/* Body / work jacket */}
       <path
         d="M14 72 Q20 60 30 57 L40 63 L50 57 Q60 60 66 72 L68 110 L12 110 Z"
-        fill="#2e3b45"
-        stroke="#1e2b33"
+        fill="url(#vladJacketGrad)"
+        stroke="#1c2830"
         strokeWidth="1.2"
         strokeLinejoin="round"
       />
@@ -58,24 +80,24 @@ function EngineerAvatar({ mood }: { mood: CharacterMood }) {
       <rect x="12" y="82" width="56" height="5" rx="1" fill="#e8c84a" opacity="0.9" />
 
       {/* Chest pocket */}
-      <rect x="43" y="62" width="10" height="8" rx="2" fill="#243038" stroke="#1e2b33" strokeWidth="0.8" />
+      <rect x="43" y="62" width="10" height="8" rx="2" fill="#243038" stroke="#1c2830" strokeWidth="0.8" />
       <path d="M44 66 H52" stroke="#e8c84a" strokeWidth="0.9" strokeLinecap="round" />
 
       {/* Left arm */}
       <path
         d="M14 72 Q8 80 10 95 L18 93 Q18 82 22 76 Z"
-        fill="#2e3b45"
-        stroke="#1e2b33"
+        fill="url(#vladJacketGrad)"
+        stroke="#1c2830"
         strokeWidth="1"
       />
       {/* Left hand */}
-      <ellipse cx="14" cy="96" rx="5" ry="6" fill="#efb98a" />
+      <ellipse cx="14" cy="96" rx="5" ry="6" fill="url(#vladSkinGrad)" />
 
       {/* Right arm holding wrench */}
       <path
         d="M66 72 Q72 80 70 94 L62 92 Q62 82 58 76 Z"
-        fill="#2e3b45"
-        stroke="#1e2b33"
+        fill="url(#vladJacketGrad)"
+        stroke="#1c2830"
         strokeWidth="1"
       />
       {/* Wrench */}
@@ -84,21 +106,21 @@ function EngineerAvatar({ mood }: { mood: CharacterMood }) {
       <ellipse cx="65.5" cy="101" rx="4" ry="3.5" fill="none" stroke="#8fa0ac" strokeWidth="2" />
 
       {/* Neck */}
-      <rect x="35" y="52" width="10" height="10" rx="3" fill="#efb98a" />
+      <rect x="35" y="52" width="10" height="10" rx="3" fill="url(#vladSkinGrad)" />
 
       {/* Head */}
-      <ellipse cx="40" cy="34" rx="19" ry="21" fill="#efb98a" />
+      <ellipse cx="40" cy="34" rx="19" ry="21" fill="url(#vladSkinGrad)" />
 
       {/* Hard hat */}
       <path
         d="M21 25 C21 12 59 12 59 25 L62 30 L18 30 Z"
-        fill="#f0c040"
-        stroke="#c99212"
+        fill="url(#helmetGrad)"
+        stroke="#b88307"
         strokeWidth="1.2"
       />
-      <rect x="18" y="28" width="44" height="5" rx="2.5" fill="#f0c040" stroke="#c99212" strokeWidth="1" />
+      <rect x="18" y="28" width="44" height="5" rx="2.5" fill="url(#helmetGrad)" stroke="#b88307" strokeWidth="1" />
       {/* Hat brim shadow */}
-      <path d="M18 33 L62 33" stroke="#c99212" strokeWidth="0.8" opacity="0.4" />
+      <path d="M18 33 L62 33" stroke="#b88307" strokeWidth="0.8" opacity="0.4" />
 
       {/* Short dark hair (visible below hat) */}
       <path d="M21 30 C19 34 20 40 21 42" fill="none" stroke="#4a3020" strokeWidth="5" strokeLinecap="round" />
