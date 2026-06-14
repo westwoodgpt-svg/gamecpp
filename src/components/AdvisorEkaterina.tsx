@@ -7,7 +7,7 @@ type AdvisorEkaterinaProps = {
   isAnimated: boolean;
 };
 
-function AdvisorAvatar({ mood }: { mood: CharacterMood }) {
+function AdvisorAvatar({ mood, isSpeaking }: { mood: CharacterMood; isSpeaking: boolean }) {
   const isHappy = mood === "happy";
   const isSad = mood === "sad";
   const isSurprised = mood === "surprised";
@@ -160,9 +160,21 @@ function AdvisorAvatar({ mood }: { mood: CharacterMood }) {
       <ellipse cx="29" cy="38" rx="5" ry="3" fill="#e87c7c" opacity={blushOpacity} />
       <ellipse cx="51" cy="38" rx="5" ry="3" fill="#e87c7c" opacity={blushOpacity} />
 
-      {/* Mouth */}
-      <path d={mouthPath} stroke="#8b4f45" strokeWidth="2" fill="none" strokeLinecap="round" />
-      {isHappy && <path d="M32 46 Q40 54 48 46" fill="rgba(220,130,120,0.15)" />}
+      {/* Mouth — static shape when silent, animated ellipse when speaking */}
+      {isSpeaking ? (
+        <ellipse
+          cx="40" cy="47" rx="5" ry="3"
+          fill="rgba(100,40,30,0.18)"
+          stroke="#8b4f45"
+          strokeWidth="1.5"
+          className="char-mouth-speaking"
+        />
+      ) : (
+        <>
+          <path d={mouthPath} stroke="#8b4f45" strokeWidth="2" fill="none" strokeLinecap="round" />
+          {isHappy && <path d="M32 46 Q40 54 48 46" fill="rgba(220,130,120,0.15)" />}
+        </>
+      )}
     </svg>
   );
 }
@@ -177,7 +189,7 @@ export function AdvisorEkaterina({ character, isAnimated }: AdvisorEkaterinaProp
       isAnimated={isAnimated}
       detailHint={characterHints.advisor}
       variant="advisor"
-      avatar={<AdvisorAvatar mood={character.mood} />}
+      avatar={(isSpeaking) => <AdvisorAvatar mood={character.mood} isSpeaking={isSpeaking} />}
     />
   );
 }

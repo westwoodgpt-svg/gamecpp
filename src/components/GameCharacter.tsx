@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { CharacterMessage, CharacterMood } from "../game/gameState";
+import { useTypewriter } from "../hooks/useTypewriter";
 
 export interface GameCharacterProps {
   name: string;
@@ -9,7 +10,8 @@ export interface GameCharacterProps {
   isAnimated?: boolean;
   detailHint: string;
   variant: "advisor" | "engineer";
-  avatar: ReactNode;
+  // render-function so isSpeaking can reach inside the SVG avatar
+  avatar: (isSpeaking: boolean) => ReactNode;
 }
 
 export function GameCharacter({
@@ -22,13 +24,16 @@ export function GameCharacter({
   variant,
   avatar,
 }: GameCharacterProps) {
+  const rawText = message?.text ?? "Готовлю рекомендацию по следующему ходу.";
+  const { displayed, isSpeaking } = useTypewriter(rawText);
+
   return (
     <article
-      className={`character character--${variant} mood-${mood} ${isAnimated ? "animated" : ""}`}
+      className={`character character--${variant} mood-${mood}${isAnimated ? " animated" : ""}${isSpeaking ? " is-speaking" : ""}`}
       title={detailHint}
     >
       <div className={`char-avatar char-avatar--${variant}`} aria-hidden="true">
-        {avatar}
+        {avatar(isSpeaking)}
       </div>
       <div className="character-copy">
         <div className="character-name-row">
@@ -45,7 +50,10 @@ export function GameCharacter({
           </div>
         </div>
         <div className="speech-bubble">
-          <p className="character-message">{message?.text ?? "Готовлю рекомендацию по следующему ходу."}</p>
+          <p className="character-message">
+            {displayed}
+            {isSpeaking && <span className="typewriter-cursor" aria-hidden="true" />}
+          </p>
         </div>
       </div>
     </article>

@@ -1880,6 +1880,44 @@ select:focus {
   50% { transform: translateY(-4px); }
 }
 
+/* ── Typewriter cursor ── */
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: currentColor;
+  border-radius: 1px;
+  animation: tw-blink 0.6s step-end infinite;
+}
+
+@keyframes tw-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── Speaking mouth animation ── */
+.char-mouth-speaking {
+  transform-origin: 40px 48px;
+  animation: mouth-talk 0.14s ease-in-out infinite alternate;
+}
+
+@keyframes mouth-talk {
+  from { transform: scaleY(0.25); }
+  to   { transform: scaleY(1);    }
+}
+
+/* Subtle head bob while speaking */
+.is-speaking .char-avatar .char-svg {
+  animation: char-head-talk 0.28s ease-in-out infinite alternate, char-idle 4s ease-in-out infinite !important;
+}
+
+@keyframes char-head-talk {
+  from { transform: translateY(0) rotate(0deg); }
+  to   { transform: translateY(-1.5px) rotate(0.8deg); }
+}
+
 /* ── Locked project card ── */
 .project-card--locked {
   position: relative;

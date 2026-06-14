@@ -7,7 +7,7 @@ type EngineerVladProps = {
   isAnimated: boolean;
 };
 
-function EngineerAvatar({ mood }: { mood: CharacterMood }) {
+function EngineerAvatar({ mood, isSpeaking }: { mood: CharacterMood; isSpeaking: boolean }) {
   const isHappy = mood === "happy";
   const isSad = mood === "sad";
   const isSurprised = mood === "surprised";
@@ -154,9 +154,21 @@ function EngineerAvatar({ mood }: { mood: CharacterMood }) {
       <path d="M31 44 Q40 50 49 44" fill="rgba(74,48,32,0.15)" stroke="none" />
       <path d="M30 43 Q40 49 50 43" fill="none" stroke="rgba(74,48,32,0.3)" strokeWidth="0.6" strokeDasharray="1.5 2" />
 
-      {/* Mouth */}
-      <path d={mouthPath} stroke="#7a4535" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      {isHappy && <path d="M32 47 Q40 56 48 47" fill="rgba(200,120,100,0.12)" />}
+      {/* Mouth — static shape when silent, animated ellipse when speaking */}
+      {isSpeaking ? (
+        <ellipse
+          cx="40" cy="49" rx="6" ry="3.5"
+          fill="rgba(80,30,20,0.18)"
+          stroke="#7a4535"
+          strokeWidth="1.5"
+          className="char-mouth-speaking"
+        />
+      ) : (
+        <>
+          <path d={mouthPath} stroke="#7a4535" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+          {isHappy && <path d="M32 47 Q40 56 48 47" fill="rgba(200,120,100,0.12)" />}
+        </>
+      )}
 
       {/* Safety glasses on hat (thinking/working mode) */}
       {isThinking && (
@@ -180,7 +192,7 @@ export function EngineerVlad({ character, isAnimated }: EngineerVladProps) {
       isAnimated={isAnimated}
       detailHint={characterHints.engineer}
       variant="engineer"
-      avatar={<EngineerAvatar mood={character.mood} />}
+      avatar={(isSpeaking) => <EngineerAvatar mood={character.mood} isSpeaking={isSpeaking} />}
     />
   );
 }
