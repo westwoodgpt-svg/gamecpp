@@ -30,8 +30,9 @@ function getMetricIcon(key: string) {
     case "cash":
       return (
         <svg className="metric-icon" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="12" y1="1" x2="12" y2="23" />
-          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <path d="M12 10 h-3 a2 2 0 0 0 0 4 h2 a2 2 0 0 1 0 4 H8M12 8v1M12 17v1" />
+          <line x1="12" y1="8" x2="12" y2="16" />
         </svg>
       );
     case "grants":

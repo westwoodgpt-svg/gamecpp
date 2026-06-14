@@ -1,4 +1,4 @@
-import { initialCharacters, stageOrder } from "./gameData";
+import { initialCharacters, stageLabels, stageOrder } from "./gameData";
 import type {
   ActiveSupport,
   CharacterState,
@@ -257,7 +257,7 @@ export function generateTurnOutcome(state: GameState): GameState {
       events.push({
         id: `progress-${project.id}-${state.company.turn}`,
         type: "project_breakthrough",
-        message: `Проект «${project.name}» продвинулся до стадии «${newStage}», уровень технологической готовности вырос.`,
+        message: `Проект «${project.name}» продвинулся до стадии «${stageLabels[newStage]}», уровень технологической готовности вырос.`,
       });
       company.reputation = Math.min(100, company.reputation + (isCommercial ? 8 : 3));
       return {
@@ -352,6 +352,26 @@ export function generateTurnOutcome(state: GameState): GameState {
         },
       ],
     };
+  }
+
+  // Игра заканчивается досрочно, если все разблокированные проекты выведены на рынок
+  if (!nextState.isGameOver) {
+    const unlockedProjects = nextState.projects.filter((p) => p.unlockedAtTurn <= nextState.company.turn);
+    const allCommercialized = unlockedProjects.length > 0 && unlockedProjects.every((p) => p.isSuccessful === true);
+    if (allCommercialized) {
+      nextState = {
+        ...nextState,
+        isGameOver: true,
+        turnEvents: [
+          ...nextState.turnEvents,
+          {
+            id: `all-commercial-${state.company.turn}`,
+            type: "project_breakthrough",
+            message: "Все проекты выведены на рынок! Компания достигла максимального результата. Партия завершена.",
+          },
+        ],
+      };
+    }
   }
 
   return nextState;
@@ -451,7 +471,7 @@ function updateCharacterMessages(
 function grantTypeLabel(type: SupportType): string {
   switch (type) {
     case "regional_engineering_subsidy":
-      return "субсидия ИИЦ";
+      return "субсидия ЦПП КО";
     case "fasie_start":
       return "грант «Старт-1»";
     case "fasie_commercialization":

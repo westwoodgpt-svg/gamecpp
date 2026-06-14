@@ -12,7 +12,7 @@ type ProjectsPanelProps = {
 function turnToQuarter(turn: number): string {
   const q = ((turn - 1) % 4) + 1;
   const y = 2026 + Math.floor((turn - 1) / 4);
-  return `Q${q} ${y}`;
+  return `${y} г., кв. ${q}`;
 }
 
 export function ProjectsPanel({ state, onInvest, onToggleActive }: ProjectsPanelProps) {
